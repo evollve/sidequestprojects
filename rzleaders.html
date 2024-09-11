@@ -1,0 +1,227 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>FFviz</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="index.html" class="logo">
+									<span class="symbol"><img src="images/ffviz-logo.png" alt="" /></span><span class="title">FFviz</span>
+								</a>
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="rzleaders.html">Red Zone Target Leaders</a></li>
+							<li><a href="rzweek1.html">Red Zone Targets Week 1</a></li>
+
+						</ul>
+					</nav>
+
+
+					<div id="main">
+						<div class="inner">
+							<h1>Red Zone Target Leaders</h1>
+						</div>
+					</div>
+
+<div id="main">
+    <div class="inner">
+        <div id="team-selector-container" style="margin-bottom: 20px;"></div>
+        <div id="chart" style="width:100%; height:800px;"></div>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script>
+var data = [
+    { player: 'Isaiah Likely', team: 'BAL', targets: 3 },
+    { player: 'Cooper Kupp', team: 'LAR', targets: 3 },
+    { player: 'WanDale Robinson', team: 'NYG', targets: 3 },
+    { player: 'Mike Evans', team: 'TAM', targets: 3 },
+    { player: 'Stefon Diggs', team: 'HOU', targets: 3 },
+    { player: 'Josh Palmer', team: 'LAC', targets: 2 },
+    { player: 'Tyreek Hill', team: 'MIA', targets: 2 },
+    { player: 'Justice Hill', team: 'BAL', targets: 2 },
+    { player: 'K.J. Osborn', team: 'NWE', targets: 2 },
+    { player: 'Jerry Jeudy', team: 'CLE', targets: 2 },
+    { player: 'Diontae Johnson', team: 'CAR', targets: 2 },
+    { player: 'Zay Flowers', team: 'BAL', targets: 2 },
+    { player: 'Amon-Ra St. Brown', team: 'DET', targets: 2 },
+    { player: 'Romeo Doubs', team: 'GNB', targets: 2 },
+    { player: 'Courtland Sutton', team: 'DEN', targets: 2 },
+    { player: 'Kenneth Walker', team: 'SEA', targets: 2 },
+    { player: 'Christian Watson', team: 'GNB', targets: 2 },
+    { player: 'Amari Cooper', team: 'CLE', targets: 2 },
+    { player: 'DeVon Achane', team: 'MIA', targets: 2 },
+    { player: 'Ladd McConkey', team: 'LAC', targets: 2 },
+    { player: 'Tucker Kraft', team: 'GNB', targets: 2 },
+    { player: 'Keenan Allen', team: 'CHI', targets: 2 },
+    { player: 'Jaleel McLaughlin', team: 'DEN', targets: 1 },
+    { player: 'David Moore', team: 'CAR', targets: 1 },
+    { player: 'Foster Moreau', team: 'NOR', targets: 1 },
+    { player: 'Chigoziem Okonkwo', team: 'TEN', targets: 1 },
+    { player: 'Luke McCaffrey', team: 'WAS', targets: 1 },
+    { player: 'Trey McBride', team: 'ARI', targets: 1 },
+    { player: 'Khalil Shakir', team: 'BUF', targets: 1 },
+    { player: 'Kyle Pitts', team: 'ATL', targets: 1 }
+];
+
+var teamColors = {
+    'BAL': '#241773',
+    'LAR': '#003594',
+    'NYG': '#0B2265',
+    'TAM': '#D50A0A',
+    'HOU': '#03202F',
+    'LAC': '#0080C6',
+    'MIA': '#008E97',
+    'NWE': '#002244',
+    'CLE': '#311D00',
+    'CAR': '#0085CA',
+    'DET': '#0076B6',
+    'GNB': '#203731',
+    'DEN': '#FB4F14',
+    'SEA': '#002244',
+    'CHI': '#0B162A',
+    'NOR': '#D3BC8D',
+    'TEN': '#0C2340',
+    'WAS': '#773141',
+    'ARI': '#97233F',
+    'BUF': '#00338D',
+    'ATL': '#A71930'
+};
+
+
+            var teams = ['All Teams', ...new Set(data.map(item => item.team))];
+
+            function plotChart(team) {
+    var screenWidth = window.innerWidth;
+    var rightMargin = screenWidth < 768 ? 0 : 50; // Adjust right margin based on screen size
+    var textSize = screenWidth < 768 ? '10px' : '12px'; // Adjust text size based on screen size
+    var textPosition = screenWidth < 768 ? 'inside' : 'outside'; // Move text inside the bar for small screens
+
+    var filteredData = team === 'All Teams' ? data : data.filter(item => item.team === team);
+    filteredData.sort((a, b) => b.targets - a.targets);
+    var yLabels = filteredData.map(item => `${item.player} (${item.team})`);
+    var trace = {
+        y: yLabels,
+        x: filteredData.map(item => item.targets),
+        type: 'bar',
+        orientation: 'h',
+        marker: {
+            color: filteredData.map(item => teamColors[item.team]),
+            line: {
+                color: 'white',
+                width: 1
+            }
+        },
+        text: filteredData.map(item => item.targets.toString()),
+        textposition: textPosition,
+	textangle: screenWidth < 768 ? 0 : 0, // Keep text horizontal on all screens
+        insidetextanchor: 'end',
+        insidetextfont: { size: textSize },
+        hoverinfo: 'none'
+    };
+    var layout = {
+        title: '',
+        autosize: true,
+        height: 800,
+        margin: { l: 180, r: rightMargin, t: 50, b: 50 },
+        paper_bgcolor: '#f4f4f4',
+        plot_bgcolor: '#f4f4f4',
+        yaxis: {
+            autorange: "reversed"
+        }
+    };
+    var config = {
+        displayModeBar: false, // Disable the mode bar
+        staticPlot: true      // Disable all interactive functionality
+    };
+    Plotly.newPlot('chart', [trace], layout, config);
+}
+
+plotChart('All Teams');
+window.onresize = function() { plotChart(document.getElementById('team-select').value); }; // Replot chart on window resize
+
+
+            var teamSelector = `
+                <label for="team-select">Choose a team:</label>
+                <select id="team-select" onchange="plotChart(this.value)">
+                    ${teams.map(team => `<option value="${team}">${team}</option>`).join('')}
+                </select>
+            `;
+            document.getElementById('team-selector-container').innerHTML = teamSelector;
+        </script>
+        <!-- More content here -->
+    </div>
+</div>
+
+
+
+
+
+				<!-- Footer -->
+					<footer id="footer">
+
+						<!-- Tally Form Embed -->
+							<section id="tallyForm" class="wrapper style2 special">
+							    <div class="inner">
+							        <header class="major">
+							            <h2>Subscribe</h2>
+							        </header>
+							        <iframe data-tally-src="https://tally.so/embed/mRRE7K?alignLeft=1&hideTitle=1&dynamicHeight=1" loading="lazy" height="120" frameborder="0" marginheight="0" marginwidth="0" title="Email Subscription Form"></iframe>
+							        <script>
+							            var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach(function(e){e.src=e.dataset.tallySrc})};
+							            if("undefined"!=typeof Tally)v();
+							            else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}
+							        </script>
+							    </div>
+							</section>
+							<!--
+							<section>
+								<h2>Socials</h2>
+								<ul class="icons">
+									<li><a href="#" class="icon brands style2 fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="hello@ffviz.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+							-->
+							<div style="padding-top: 2em;" class="copyright">
+								<li>&copy; FFviz 🏈📈| All rights reserved</li>
+							</div>
+
+					</footer>
+
+			</div>
+
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
